@@ -79,7 +79,7 @@ def hangman():
     print(" ".join(word_display))
     wrong_guesses= 0
     while wrong_guesses < 6:
-        guess= input("Guess a letter: ")
+        guess= input("Guess a letter(enter exit to surrender): ")
         guess= guess.upper()
         if guess in word:
             for i in range(word_length):
