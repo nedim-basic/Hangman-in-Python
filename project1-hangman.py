@@ -66,29 +66,66 @@ hangman_stages = [
 
 
 def hangman():
+    clear()
+    print("Welcome to Hangman!")
+    print("Enter 'exit' to exit the game at any time.")
+    
+    diff= input("Choose difficulty(easy-e, medium-m, hard-h): ")
+    if diff == "e":
+        allowed_guesses= 6
+    elif diff == "m":
+        allowed_guesses= 4
+    elif diff == "h":
+        allowed_guesses= 2
+    elif diff == "exit":
+        print("Thanks for playing!")
+        exit() 
+    else:
+        print("Please enter a valid difficulty.")
+        hangman()
     guesses= []
     inProgress = True
+    clear()
     word= input("Enter a word: ")
     clear()
+    attempts = 0
     word= word.upper()
+    if word == "EXIT":
+        print("Thanks for playing!")
+        exit()
     word= list(word)
     word_length= len(word)
     word_display= []
     for i in range(word_length):
         word_display.append("_")
-    print(" ".join(word_display))
     wrong_guesses= 0
-    while wrong_guesses < 6:
-        guess= input("Guess a letter(enter exit to surrender): ")
+    print(hangman_stages[wrong_guesses])
+    print(" ".join(word_display))
+    while wrong_guesses < allowed_guesses:
+        clear()
+        print(hangman_stages[wrong_guesses])
+        print(" ".join(word_display))
+        print("\n")
+        print("Attempts: {}".format(attempts))
+        print("Lives: {}".format(allowed_guesses-wrong_guesses))
+        print("Guesses: {}".format(", ".join(guesses)))
+        
+        
+        guess= input("\nGuess a letter: ")
+        print("\n")
         guess= guess.upper()
+        if guess in guesses:
+            print("You already guessed that letter.")
+            continue
+        else:
+            guesses.append(guess)
         if guess in word:
             for i in range(word_length):
-                if guess in guesses:
-                    print("You already guessed that letter.")
-                    break
-                elif guess == word[i]:
-                    guesses.append(guess)
+                
+                if guess == word[i]:
+                    
                     word_display[i]= guess
+                    
             print(" ".join(word_display))
             if "_" not in word_display:
                 print("You won!")
@@ -104,7 +141,7 @@ def hangman():
             wrong_guesses += 1
             print(hangman_stages[wrong_guesses])
             print("Wrong guess! You have {} wrong guesses left.".format(6-wrong_guesses))
-    if wrong_guesses == 6:
+    if wrong_guesses == allowed_guesses:
 
         print("You lost! The word was {}.".format("".join(word)))
 
